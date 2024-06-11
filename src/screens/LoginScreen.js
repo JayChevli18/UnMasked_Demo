@@ -1,58 +1,99 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Keyboard, KeyboardAvoidingView, Platform, Text, View, Image, TouchableHighlight } from "react-native";
+import { StyleSheet, Keyboard, Text, View, Image, TouchableHighlight } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput, Checkbox, Icon, IconButton } from "react-native-paper";
+import { TextInput, Checkbox } from "react-native-paper";
 import LinearGradient from "react-native-linear-gradient";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-
 export const LoginScreen = ({ navigation }) => {
   const [checked, setChecked] = useState(false);
   const [secureText, setSecureText] = useState(true);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    // cleanup function
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
 
+  const validate = () => {
+    let valid = true;
+
+    if (!email) {
+      setEmailError("Email ID is required");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!password) {
+      setPasswordError("Password is required");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    return valid;
+  };
+
+  const handleLogin = () => {
+    if (validate()) {
+      console.log("Validation Passed");
+      // Handle login logic
+    }
+  };
+
   return (
-
     <SafeAreaView style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}>
-      <View style={styles.topContainer}>
-        <Image source={require('../../assets/Frame.png')} style={styles.microImage} />
-      </View>
-
       <KeyboardAwareScrollView>
+        <View style={styles.topContainer}>
+          <Image source={require('../../assets/Frame.png')} style={styles.microImage} />
+        </View>
+
         <View style={styles.middleContainer}>
-          <Text style={{ fontSize: 30, color: "black", fontWeight: "bold", marginTop: 70 }}>Log In</Text>
-          <TextInput style={[styles.textInput, { marginTop: 40, marginBottom: 15 }]} placeholder="Enter Email ID" mode="outlined" returnKeyType="google" textContentType="emailAddress" placeholderTextColor="grey" outlineColor="grey"></TextInput>
+          <Text style={{ fontSize: 30, color: "black", fontWeight: "bold", marginTop: 100 }}>Log In</Text>
+
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { marginTop: 40 }]}
+            placeholder="Enter Email ID"
+            mode="outlined"
+            returnKeyType="google"
+            textContentType="emailAddress"
+            placeholderTextColor="grey"
+            outlineColor="grey"
+            value={email}
+            onChangeText={setEmail}
+            error={!!emailError}
+          />
+          {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
+          <TextInput
+            style={[styles.textInput, {marginTop:15}]}
             placeholder="Enter Password"
             mode="outlined"
             secureTextEntry={secureText}
             placeholderTextColor="grey"
             outlineColor="grey"
+            value={password}
+            onChangeText={setPassword}
+            error={!!passwordError}
             right={
               <TextInput.Icon
                 icon={secureText ? "eye-off" : "eye"}
@@ -61,24 +102,29 @@ export const LoginScreen = ({ navigation }) => {
               />
             }
           />
+          {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
           <View style={{ alignSelf: "flex-start", alignItems: "center", marginLeft: 38, flexDirection: "row", marginTop: 15 }}>
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
+              onPress={() => setChecked(!checked)}
             />
             <Text style={{ fontSize: 15, marginRight: 45 }}>Remember Me!</Text>
-
             <TouchableHighlight underlayColor="#e2e2e2" onPress={() => navigation.navigate("ForgotPasswordScreen")}>
               <Text style={{ fontSize: 15 }}>Forgot Password?</Text>
             </TouchableHighlight>
-
           </View>
 
-          <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 30 }}>
-            <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center", }]} onPress={() => console.log("ok")}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            colors={["#FBB4D1", "#BF9EF2"]}
+            style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 15 }}
+          >
+            <TouchableHighlight
+              underlayColor="#BF9EF2"
+              style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]}
+              onPress={handleLogin}
+            >
               <View>
                 <Text style={{ color: "white", fontSize: 18 }}>Log In</Text>
               </View>
@@ -86,7 +132,6 @@ export const LoginScreen = ({ navigation }) => {
           </LinearGradient>
 
           {!keyboardVisible && (
-
             <View>
               <View style={{ flexDirection: 'row', alignItems: 'center', width: 300, marginTop: 30 }}>
                 <View style={{ flex: 1, height: 1, backgroundColor: 'grey' }} />
@@ -96,16 +141,15 @@ export const LoginScreen = ({ navigation }) => {
                 <View style={{ flex: 1, height: 1, backgroundColor: 'grey' }} />
               </View>
 
-
               <View style={{ flexDirection: 'row', justifyContent: "center", gap: 20, alignItems: 'center', width: 300, marginTop: 10 }}>
                 <TouchableHighlight style={styles.mediaicon} underlayColor="lightblue" onPress={() => { console.log("facebook") }}>
-                  <MaterialIcons name="facebook" size={35} color="#338bff"></MaterialIcons>
+                  <MaterialIcons name="facebook" size={35} color="#338bff" />
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.mediaicon} underlayColor="#ffa08f" onPress={() => { console.log("google") }}>
-                  <FontAwesome name="google-plus-circle" size={35} color="#ff5638"></FontAwesome>
+                  <FontAwesome name="google-plus-circle" size={35} color="#ff5638" />
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.mediaicon} underlayColor="#ace8ff" onPress={() => { console.log("skype") }}>
-                  <Entypo name="twitter-with-circle" size={35} color="#1abeff"></Entypo>
+                <TouchableHighlight style={styles.mediaicon} underlayColor="#ace8ff" onPress={() => { console.log("twitter") }}>
+                  <Entypo name="twitter-with-circle" size={35} color="#1abeff" />
                 </TouchableHighlight>
               </View>
             </View>
@@ -114,20 +158,27 @@ export const LoginScreen = ({ navigation }) => {
       </KeyboardAwareScrollView>
       {!keyboardVisible && (
         <View style={styles.bottomContainer}>
-          <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ width: 550, height: 330, borderRadius: 200, justifyContent: "center", left: -80, alignItems: "center", position: "absolute", bottom: -280 }}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            colors={["#FBB4D1", "#BF9EF2"]}
+            style={{ width: 550, height: 330, borderRadius: 200, justifyContent: "center", left: -80, alignItems: "center", position: "absolute", bottom: -280 }}
+          >
           </LinearGradient>
           <View style={{ flexDirection: "row" }}>
-            <Text style={{ fontSize: 15, color: "black", marginTop: 50 }} >Don't have an account?</Text>
-            <TouchableHighlight underlayColor="#c6e1ff" style={{ marginLeft: 5, marginTop: 50 }} onPress={() => navigation.navigate("SignUpScreen")}>
-              <Text style={{ color: "blue" }}>  Create new one</Text>
+            <Text style={{ fontSize: 15, color: "black", marginTop: 65 }}>Don't have an account?</Text>
+            <TouchableHighlight
+              underlayColor="#fac3ff"
+              style={{ marginLeft: 5, marginTop: 65, borderRadius: 10 }}
+              onPress={() => navigation.navigate("SignUpScreen")}
+            >
+              <Text style={{ color: "blue" }}> Create new one </Text>
             </TouchableHighlight>
           </View>
         </View>
       )}
-
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   topContainer: {
@@ -139,9 +190,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   bottomContainer: {
-    flex: 1,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: 15,
   },
   microImage: {
     alignItems: "flex-start",
@@ -156,5 +210,11 @@ const styles = StyleSheet.create({
   },
   mediaicon: {
     borderRadius: 5
-  }
-})
+  },
+  errorText: {
+    color: 'red',
+    alignSelf: 'flex-start',
+    marginLeft: 45,
+    marginBottom: 5,
+  },
+});

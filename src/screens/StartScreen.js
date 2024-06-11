@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     width: 50,
     height: 25,
-    marginTop: 45,
+    marginTop: 35,
     //marginLeft:30
   },
   imageBackground: {
