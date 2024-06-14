@@ -8,7 +8,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {useDispatch, useSelector} from "react-redux";
-import { loginUser, signInWithGoogle } from "../store/authSlice";
+import { loginUser, signInWithFacebook, signInWithGoogle } from "../store/authSlice";
 import { auth } from "../firebase/firebase";
 import { Navigation } from "../navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -84,6 +84,8 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleFacebookLogin=()=>{
     
+    dispatch(signInWithFacebook()).then(()=>{console.log("okthen")}).catch((err)=>{console.log(err)});
+
   }
 
   return (
@@ -171,7 +173,7 @@ export const LoginScreen = ({ navigation }) => {
                 <TouchableHighlight style={styles.mediaicon} underlayColor="lightblue" onPress={handleFacebookLogin}>
                   <MaterialIcons name="facebook" size={35} color="#338bff" />
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.mediaicon} underlayColor="#ffa08f" onPress={() => {handleGoogleLogin}}>
+                <TouchableHighlight style={styles.mediaicon} underlayColor="#ffa08f" onPress={handleGoogleLogin}>
                   <FontAwesome name="google-plus-circle" size={35} color="#ff5638" />
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.mediaicon} underlayColor="#ace8ff" onPress={() => { console.log("twitter") }}>

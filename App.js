@@ -6,10 +6,14 @@ import { PersistGate } from 'redux-persist/integration/react';
 //import {store, persistor} from "./src/store/store";
 import { firebaseConfig } from './src/firebase/firebase';
 import store from "./src/store/store";
+import { Settings } from 'react-native-fbsdk-next';
 
 firebaseConfig;
 
 const App = () => {
+
+  Settings.setAppID("450217887952682");
+  Settings.initializeSDK();
 
   const [isLoading, setIsLoading] = useState(true);
 

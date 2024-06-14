@@ -6,6 +6,9 @@ import { AppNavigation } from "./app_navigation";
 import { auth } from '../firebase/firebase';
 import { setUser, clearUser } from '../store/authSlice';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import authfirebase from "@react-native-firebase/auth";
+
+
 
 export const Navigation = () => {
     const dispatch = useDispatch();
@@ -47,6 +50,7 @@ export const Navigation = () => {
         const checkLoginStatus = async () => {
             const userToken = await AsyncStorage.getItem("userToken");
             console.log(userToken);
+            console.log("LLLLLL",authfirebase().currentUser)
             if (userToken) {
                 dispatch(setUser(JSON.parse(userToken)));
             } else {

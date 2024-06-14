@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">UnMasked_demo1</string>
+    <string name="app_name">UnMasked_demo1</string>    
+    <string name="facebook_app_id">450217887952682</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">78a7659eb8102ba2c16f0c59c082a158</string>
 </resources>

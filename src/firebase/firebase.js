@@ -2,6 +2,7 @@ import {firebase} from "@react-native-firebase/app";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { Settings } from "react-native-fbsdk-next";
 
 export const firebaseConfig = {
     apiKey: "AIzaSyCPiIlLIrTbzVgauhMfWQJB05uidpP2YYw",
@@ -18,6 +19,9 @@ const app=initializeApp(firebaseConfig);
 GoogleSignin.configure({
   webClientId:"544898178639-or34pkvokjbbfsp2p9nkbig1illvumhg.apps.googleusercontent.com"
 })
+
+Settings.setAppID("450217887952682");
+Settings.initializeSDK();
 
 export const auth=getAuth(app);
 
