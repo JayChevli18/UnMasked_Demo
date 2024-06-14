@@ -4,8 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, Checkbox } from "react-native-paper";
 import LinearGradient from "react-native-linear-gradient";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../store/authSlice";
+import { auth } from "../firebase/firebase";
 
 export const SignUpScreen = ({ navigation }) => {
+
     const [checked, setChecked] = useState(false);
     const [secureText, setSecureText] = useState(true);
     const [cnfsecureText, cnfsetSecureText] = useState(true);
@@ -20,6 +24,8 @@ export const SignUpScreen = ({ navigation }) => {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+    const dispatch=useDispatch();
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -79,7 +85,16 @@ export const SignUpScreen = ({ navigation }) => {
     };
 
     const handleSignUp = () => {
-        if (validate()) {
+        if (validate()) 
+        {
+            dispatch(registerUser({auth,email,password}))
+                .unwrap()
+                .then((res)=>{
+                  console.log("----------------------",res);
+                  //AsyncStorage.setItem("userToken", JSON.stringify({email, password}))
+                })
+                .catch((err)=>{console.log(err)})
+        
             navigation.navigate("SignUpVerificationScreen");
         }
     };

@@ -1,26 +1,23 @@
-import { Text,View } from "react-native";
 import React from "react";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { StartScreen } from "../screens/StartScreen";
-import {LoginScreen} from "../screens/LoginScreen";
+import { LoginScreen } from "../screens/LoginScreen";
 import { SignUpScreen } from "../screens/SignUpScreen";
 import { SignUpVerificationScreen } from "../screens/SignUpVerificationScreen";
 import { ForgotPasswordScreen } from "../screens/ForgotPasswordScreen";
+import { AppNavigation } from "./app_navigation";
 
-export const AccountNavigation=()=>{
-    const Stack=createNativeStackNavigator();
+const Stack = createStackNavigator();
 
-    return(
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown:false}}>
-                <Stack.Screen name="StartScreen" component={StartScreen}></Stack.Screen>
-                <Stack.Screen name="LoginScreen" component={LoginScreen}></Stack.Screen>
-                <Stack.Screen name="SignUpScreen" component={SignUpScreen}></Stack.Screen>
-                <Stack.Screen name="SignUpVerificationScreen" component={SignUpVerificationScreen}></Stack.Screen>
-                <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}></Stack.Screen>
-
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
-}
+export const AccountNavigation = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="StartScreen" component={StartScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+            <Stack.Screen name="SignUpVerificationScreen" component={SignUpVerificationScreen} />
+            <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+            {/* <Stack.Screen name="Home" component={AppNavigation}></Stack.Screen> */}
+        </Stack.Navigator>
+    );
+};

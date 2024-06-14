@@ -82,9 +82,9 @@ export const SignUpVerificationScreen = ({ navigation }) => {
                         </TouchableHighlight>
                     </LinearGradient>
                     <View style={{flexDirection:"row",  justifyContent:"center", marginTop: 15, width: 300,}}>
-                    <Text style={{ color: "black"}}>Didn't receive code?</Text>
-                    <TouchableHighlight underlayColor="lightgrey" style={{borderRadius:10}} onPress={()=>{console.log("called")}}>
-                    <Text style={{ fontWeight: "bold", color:"black" }}>  Resend  </Text>                
+                    <Text style={{ color: "black"}}>Didn't receive code? </Text>
+                    <TouchableHighlight underlayColor="lightgrey"  onPress={()=>{console.log("called")}}>
+                    <Text style={{ fontWeight: "bold", color:"black" }}> Resend </Text>                
                     </TouchableHighlight>
                     </View>
                 </View>

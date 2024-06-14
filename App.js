@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Image, ImageBackground, View, Text, Touchable, TouchableOpacity, TouchableHighlight } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { AccountNavigation } from './src/navigation/account_navigation';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import SplashScreen from './src/screens/SplashScreen';
+import { Provider } from 'react-redux';
+import {Navigation} from "./src/navigation/index";
+import { PersistGate } from 'redux-persist/integration/react';
+//import {store, persistor} from "./src/store/store";
+import { firebaseConfig } from './src/firebase/firebase';
+import store from "./src/store/store";
+
+firebaseConfig;
 
 const App = () => {
 
-  const [isLoading, setIsLoading]=useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
-    setTimeout(()=>{
+  useEffect(() => {
+    setTimeout(() => {
       setIsLoading(false);
-    },1000)
-  },[]);
+    }, 1000)
+  }, []);
 
-  if(isLoading)
-  {
+  if (isLoading) {
     return <SplashScreen></SplashScreen>
   }
 
   return (
-      <AccountNavigation></AccountNavigation>
+    <Provider store={store}>
+      {/* <PersistGate loading={<SplashScreen></SplashScreen>} persistor={persistor}> */}
+        <Navigation></Navigation>
+      {/* </PersistGate> */}
+    </Provider>
   );
 }
 
 
 export default App;
+
+
