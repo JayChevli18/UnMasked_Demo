@@ -7,6 +7,12 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {useDispatch, useSelector} from "react-redux";
+import { loginUser, signInWithGoogle } from "../store/authSlice";
+import { auth } from "../firebase/firebase";
+import { Navigation } from "../navigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { getAuth } from "firebase/auth";
 
 export const LoginScreen = ({ navigation }) => {
   const [checked, setChecked] = useState(false);
@@ -18,6 +24,11 @@ export const LoginScreen = ({ navigation }) => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  // const auth=getAuth();
+
+  const dispatch=useDispatch();
+  const {loading , error}=useSelector((state)=>state.auth)
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -53,12 +64,27 @@ export const LoginScreen = ({ navigation }) => {
     return valid;
   };
 
+
   const handleLogin = () => {
     if (validate()) {
-      console.log("Validation Passed");
-      // Handle login logic
+      dispatch(loginUser({auth,email,password}))
+        .unwrap()
+        .then((res)=>{
+          console.log("----------------------",res);
+          //AsyncStorage.setItem("userToken", JSON.stringify({email, password}))
+        })
+        .catch((err)=>{console.log(err)})
     }
   };
+
+
+  const handleGoogleLogin=()=>{
+    dispatch(signInWithGoogle()).then(()=>{console.log("okthen")}).catch((err)=>{console.log(err)});
+  }
+
+  const handleFacebookLogin=()=>{
+    
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}>
@@ -142,10 +168,10 @@ export const LoginScreen = ({ navigation }) => {
               </View>
 
               <View style={{ flexDirection: 'row', justifyContent: "center", gap: 20, alignItems: 'center', width: 300, marginTop: 10 }}>
-                <TouchableHighlight style={styles.mediaicon} underlayColor="lightblue" onPress={() => { console.log("facebook") }}>
+                <TouchableHighlight style={styles.mediaicon} underlayColor="lightblue" onPress={handleFacebookLogin}>
                   <MaterialIcons name="facebook" size={35} color="#338bff" />
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.mediaicon} underlayColor="#ffa08f" onPress={() => { console.log("google") }}>
+                <TouchableHighlight style={styles.mediaicon} underlayColor="#ffa08f" onPress={() => {handleGoogleLogin}}>
                   <FontAwesome name="google-plus-circle" size={35} color="#ff5638" />
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.mediaicon} underlayColor="#ace8ff" onPress={() => { console.log("twitter") }}>
@@ -169,7 +195,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableHighlight
               underlayColor="#fac3ff"
               style={{ marginLeft: 5, marginTop: 65, borderRadius: 10 }}
-              onPress={() => navigation.navigate("SignUpScreen")}
+              onPress={handleLogin}
             >
               <Text style={{ color: "blue" }}> Create new one </Text>
             </TouchableHighlight>

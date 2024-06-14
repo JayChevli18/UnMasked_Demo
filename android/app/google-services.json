@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "544898178639",
+    "project_id": "unmasked-b29ef",
+    "storage_bucket": "unmasked-b29ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544898178639:android:69d2621b59d9dc1b08d43a",
+        "android_client_info": {
+          "package_name": "com.unmasked_demo1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544898178639-8c0idjacib1gfqj4oa0tan30offhaicf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unmasked_demo1",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "544898178639-or34pkvokjbbfsp2p9nkbig1illvumhg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI4GF1VTBn0TmeHpNt5x7WkQX22GT-_pQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544898178639-or34pkvokjbbfsp2p9nkbig1illvumhg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
