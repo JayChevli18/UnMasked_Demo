@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup, signInWithCredential } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithPopup, signInWithCredential, TwitterAuthProvider } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../firebase/firebase'; // Adjust the path as per your Firebase setup
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import authfirebase from "@react-native-firebase/auth";
 import { LoginManager, AccessToken, Settings } from "react-native-fbsdk-next";
+import { NativeModules } from 'react-native';
+
+const { RNTwitterSignIn } = NativeModules;
+
 
 
 // Async thunk for login
@@ -149,6 +153,35 @@ export const signInWithFacebook = createAsyncThunk(
 )
 
 
+export const signInWithTwitter=createAsyncThunk(
+  "auth/signInWithTwitter",
+  async()=>{
+    await RNTwitterSignIn.init('1zki592REzcoqx3WRdfgvFAw2', 'ILSF8DHWsGEooSiTufO4MdREjQCY0ZT9wFvte7kLdnBzQaa8A6').then(() =>
+      console.log('Twitter SDK initialized'),
+    );
+    try{      
+      console.log("Ddd", RNTwitterSignIn);
+      const {authToken, authTokenSecret}=await RNTwitterSignIn.logIn();
+      console.log(authToken,authTokenSecret);
+      console.log("Dddddd");
+      const l=TwitterAuthProvider.credential(authToken, authTokenSecret);
+      console.log("ll",l);
+      const twitterCredential=await authfirebase.TwitterAuthProvider.credential(authToken,authTokenSecret);
+      console.log(twitterCredential, "eeee");
+      const userCredential=await authfirebase().signInWithCredential(twitterCredential);
+      const email = userCredential.user.email;
+      const uid = userCredential.user.uid;
+      console.log(email, uid);
+      await AsyncStorage.setItem("userToken", JSON.stringify({ email, uid }));
+      return userCredential.user.toJSON();
+    }
+    catch(error){
+      console.log(error,"err");
+      throw error;
+    }
+  }
+)
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -227,6 +260,18 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(signInWithFacebook.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(signInWithTwitter.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signInWithTwitter.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(signInWithTwitter.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

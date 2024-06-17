@@ -20,7 +20,15 @@
 // SHA: Xo8WBi6jzSxKDVR4drqm84yr9iU=
 
 
+// Twitter:
 
+// API key(Consumer key): 1zki592REzcoqx3WRdfgvFAw2 
+
+// API key secret(Consumer secret key): ILSF8DHWsGEooSiTufO4MdREjQCY0ZT9wFvte7kLdnBzQaa8A6
+
+// Access Token: 1801620169976123392-mTmsmjccHpMmkHJiSThpBeCDtgqeoy
+
+// Access Token Secret: oqoDAIJYOJTvh8jWdI69lrhS1cNjtaSwvnYLEfyxCvpfv
 
 
 
