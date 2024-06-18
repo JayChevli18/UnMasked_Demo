@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Keyboard, Text, View, Image, TouchableHighlight } from "react-native";
+import { StyleSheet, Keyboard, Text, View, Image, TouchableHighlight, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput, Checkbox } from "react-native-paper";
+import { TextInput, Checkbox, ActivityIndicator } from "react-native-paper";
 import LinearGradient from "react-native-linear-gradient";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser, signInWithFacebook, signInWithGoogle, signInWithTwitter } from "../store/authSlice";
 import { auth } from "../firebase/firebase";
 import { Navigation } from "../navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BlurView } from "@react-native-community/blur";
 // import { getAuth } from "firebase/auth";
 
 export const LoginScreen = ({ navigation }) => {
@@ -27,8 +28,32 @@ export const LoginScreen = ({ navigation }) => {
 
   // const auth=getAuth();
 
-  const dispatch=useDispatch();
-  const {loading , error}=useSelector((state)=>state.auth)
+  const dispatch = useDispatch();
+  const { loading, error,user } = useSelector((state) => state.auth)
+
+  // const acv=()=>{
+  //   console.log("a");
+  //   return(
+  //     <View>
+  //     <ActivityIndicator size="large" color="black" style={{flex:1, justifyContent:"center"}}>
+  //       {console.log("b")}
+  //     </ActivityIndicator>
+  //     </View>
+  //   )
+  // }
+
+  // useEffect(()=>{
+  //   console.log("loadede");
+  //   if(error){
+  //     console.log("loadede1");
+  //     Alert.alert("Error", error);
+  //   }
+  //   if(!loading){
+  //     console.log("loadede2");
+  //     acv;
+  //   }
+  //   console.log('loaded3');
+  // }, [loading])
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -47,15 +72,23 @@ export const LoginScreen = ({ navigation }) => {
   const validate = () => {
     let valid = true;
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      setEmailError("Email ID is required");
+      setEmailError("Email ID is required!");
       valid = false;
-    } else {
+    }else if(!emailRegex.test(email)){
+      setEmailError("Invalid Email ID!");
+    } 
+    else {
       setEmailError("");
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&])[A-Za-z\d@$!#%*?&]{8,}$/;
     if (!password) {
       setPasswordError("Password is required");
+      valid = false;
+    } else if (!passwordRegex.test(password)) {
+      setPasswordError("Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
       valid = false;
     } else {
       setPasswordError("");
@@ -67,27 +100,31 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (validate()) {
-      dispatch(loginUser({auth,email,password}))
+      dispatch(loginUser({ auth, email, password }))
         .unwrap()
-        .then((res)=>{
-          console.log("----------------------",res);
+        .then((res) => {
+          console.log("----------------------", res);
           //AsyncStorage.setItem("userToken", JSON.stringify({email, password}))
         })
-        .catch((err)=>{console.log(err)})
+        .catch((err) => { 
+//          console.log(err, "dddd");
+          setPassword("");
+          Alert.alert("Invalid Email ID or Password");
+        })
     }
   };
 
 
-  const handleGoogleLogin=()=>{
-    dispatch(signInWithGoogle()).then(()=>{console.log("okthen")}).catch((err)=>{console.log(err)});
+  const handleGoogleLogin = () => {
+    dispatch(signInWithGoogle()).then(() => { console.log("okthen") }).catch((err) => { console.log(err) });
   }
 
-  const handleFacebookLogin=()=>{
-    dispatch(signInWithFacebook()).then(()=>{console.log("okthen")}).catch((err)=>{console.log(err)});
+  const handleFacebookLogin = () => {
+    dispatch(signInWithFacebook()).then(() => { console.log("okthen") }).catch((err) => { console.log(err) });
   }
 
-  const handleTwitterLogin=()=>{
-    dispatch(signInWithTwitter()).then(()=>{console.log("odddk")}).catch((err)=>console.log("X",err));
+  const handleTwitterLogin = () => {
+    dispatch(signInWithTwitter()).then(() => { console.log("odddk") }).catch((err) => console.log("X", err));
   }
 
   return (
@@ -96,6 +133,7 @@ export const LoginScreen = ({ navigation }) => {
         <View style={styles.topContainer}>
           <Image source={require('../../assets/Frame.png')} style={styles.microImage} />
         </View>
+
 
         <View style={styles.middleContainer}>
           <Text style={{ fontSize: 30, color: "black", fontWeight: "bold", marginTop: 100 }}>Log In</Text>
@@ -115,7 +153,7 @@ export const LoginScreen = ({ navigation }) => {
           {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
           <TextInput
-            style={[styles.textInput, {marginTop:15}]}
+            style={[styles.textInput, { marginTop: 15 }]}
             placeholder="Enter Password"
             mode="outlined"
             secureTextEntry={secureText}
@@ -184,7 +222,21 @@ export const LoginScreen = ({ navigation }) => {
               </View>
             </View>
           )}
+
+          {loading && (
+            <BlurView
+                  style={{position:"absolute", height:"100%", width:"100%"}}
+                  blurType="light"
+                  blurAmount={1}
+                  reducedTransparencyFallbackColor="red"
+            >       
+              <ActivityIndicator size="large" color="black" style={{position:"absolute",width:"100%", height:"120%", justifyContent:"center", alignItems:'center'}}></ActivityIndicator>
+            </BlurView>
+          )}
+
         </View>
+
+
       </KeyboardAwareScrollView>
       {!keyboardVisible && (
         <View style={styles.bottomContainer}>
@@ -199,7 +251,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableHighlight
               underlayColor="#fac3ff"
               style={{ marginLeft: 5, marginTop: 65, borderRadius: 10 }}
-              onPress={handleLogin}
+              onPress={()=>{navigation.navigate("SignUpScreen")}}
             >
               <Text style={{ color: "blue" }}> Create new one </Text>
             </TouchableHighlight>
@@ -244,6 +296,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     alignSelf: 'flex-start',
+    width: 300,
     marginLeft: 45,
     marginBottom: 5,
   },

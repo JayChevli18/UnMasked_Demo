@@ -7,13 +7,14 @@ import { auth } from '../firebase/firebase';
 import { setUser, clearUser } from '../store/authSlice';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import authfirebase from "@react-native-firebase/auth";
+import { ActivityIndicator } from "react-native-paper";
 
 
 
 export const Navigation = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
-
+    console.log("userrrr", user);
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -47,9 +48,24 @@ export const Navigation = () => {
 
 
     useEffect(() => {
+
+        if(isLoading){
+            console.log("goinf");
+            return <>
+                <ActivityIndicator>
+
+                </ActivityIndicator>
+            </>
+        }
+        else
+        {
+            console.log("down");
+            setIsLoading(false);
+        }
+
         const checkLoginStatus = async () => {
             const userToken = await AsyncStorage.getItem("userToken");
-            console.log(userToken);
+            console.log(userToken, "index");
             console.log("LLLLLL",authfirebase().currentUser)
             if (userToken) {
                 dispatch(setUser(JSON.parse(userToken)));
@@ -61,8 +77,10 @@ export const Navigation = () => {
 
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
+                console.log("coas");
                 dispatch(setUser(authUser.toJSON()));
             } else {
+                console.log("wwww");
                 dispatch(clearUser());
             }
         });

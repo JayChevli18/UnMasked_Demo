@@ -5,7 +5,7 @@ import { auth } from '../firebase/firebase'; // Adjust the path as per your Fire
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import authfirebase from "@react-native-firebase/auth";
 import { LoginManager, AccessToken, Settings } from "react-native-fbsdk-next";
-import { NativeModules } from 'react-native';
+import { Alert, NativeModules } from 'react-native';
 
 const { RNTwitterSignIn } = NativeModules;
 
@@ -55,7 +55,7 @@ export const logoutUser = createAsyncThunk(
       // else if(providerId="facebook.com")
       // {
       //   console.log("C");
-      //   await LoginManager.logOut();
+      //   LoginManager.logOut();
       //   console.log("d");
       // }
       // else{
@@ -77,12 +77,13 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async ({ email, password }) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await authfirebase().createUserWithEmailAndPassword(email, password);
       await AsyncStorage.setItem("userToken", JSON.stringify({ email, password }));
       setUser(userCredential);
       return userCredential.user.toJSON();
     }
     catch (error) {
+      Alert.alert("Currently, out Service is down! Please try again later!");
       throw error;
     }
   }
@@ -103,6 +104,7 @@ export const signInWithGoogle = createAsyncThunk(
       return userCredential.user.toJSON();
     }
     catch (error) {
+      Alert.alert("Currently, Google Service is down! Please try another option!");
       console.log("Ddd", error);
       throw error;
     }
@@ -146,6 +148,7 @@ export const signInWithFacebook = createAsyncThunk(
 
     }
     catch (error) {
+      Alert.alert("Currently, Facebook Service is down! Please try another option!");
       console.log("ereeeeeee", error);
       throw error;
     }
@@ -176,6 +179,7 @@ export const signInWithTwitter=createAsyncThunk(
       return userCredential.user.toJSON();
     }
     catch(error){
+      Alert.alert("Currently, Twitter Service is down! Please try another option!");
       console.log(error,"err");
       throw error;
     }
@@ -252,10 +256,13 @@ const authSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(signInWithFacebook.pending, (state) => {
+        console.log("addCaasee");
         state.loading = true;
         state.error = null;
       })
       .addCase(signInWithFacebook.fulfilled, (state, action) => {
+        console.log("Fulll");
+
         state.loading = false;
         state.user = action.payload;
       })

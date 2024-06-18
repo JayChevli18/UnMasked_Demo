@@ -35,10 +35,16 @@ export const ForgotPasswordScreen = ({navigation}) => {
     const validate = () => {
         let valid = true;
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
             setEmailError("Email is required");
             valid = false;
-        } else {
+        } 
+        else if(!emailRegex.test(email)){
+            setEmailError("Invalid Email ID!");
+            valid=false;
+        }
+        else {
             setEmailError("");
         }
 

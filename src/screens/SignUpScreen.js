@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Keyboard, Text, View, Image, TouchableHighlight } from "react-native";
+import { StyleSheet, Keyboard, Text, View, Image, TouchableHighlight, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, Checkbox } from "react-native-paper";
 import LinearGradient from "react-native-linear-gradient";
@@ -24,6 +24,7 @@ export const SignUpScreen = ({ navigation }) => {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [checkedError, setCheckedError]=useState("");
 
     const dispatch=useDispatch();
 
@@ -57,17 +58,28 @@ export const SignUpScreen = ({ navigation }) => {
             setUserNameError("");
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
             setEmailError("Email ID is required");
             valid = false;
-        } else {
+        } 
+        else if(!emailRegex.test(email)){
+            setEmailError("Invalid Email ID!");
+        }
+        else {
             setEmailError("");
         }
 
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&])[A-Za-z\d@$!#%*?&]{8,}$/;
         if (!password) {
             setPasswordError("Password is required");
             valid = false;
-        } else {
+        } 
+        else if (!passwordRegex.test(password)) {
+            setPasswordError("Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
+            valid = false;
+        }      
+        else {
             setPasswordError("");
         }
 
@@ -81,21 +93,42 @@ export const SignUpScreen = ({ navigation }) => {
             setConfirmPasswordError("");
         }
 
+        if(!checked){
+            setCheckedError("Please accept the terms and conditions!");
+//            Alert.alert("");
+            valid=false;
+        }
+        else
+        {
+            setCheckedError("");
+            setChecked(false);
+        }
         return valid;
     };
 
-    const handleSignUp = () => {
+    const handleSignUp = async() => {
         if (validate()) 
         {
-            dispatch(registerUser({auth,email,password}))
+            try{
+            await dispatch(registerUser({auth,email,password}))
                 .unwrap()
                 .then((res)=>{
-                  console.log("----------------------",res);
-                  //AsyncStorage.setItem("userToken", JSON.stringify({email, password}))
+                  console.log("R----------------------",res);
+                  //AsyncStorage.setItem("userToken", JSON.stringify({email, password}))                  
                 })
-                .catch((err)=>{console.log(err)})
-        
-            navigation.navigate("SignUpVerificationScreen");
+                .catch((err)=>{
+                    console.log("Cc",err);
+                    throw err;
+                    //Alert.alert("User Already Registered!", err);
+                });
+                console.log("sssswwwwwwwwwwww");
+                navigation.navigate("SignUpVerificationScreen");
+            }
+            catch(error)
+            {
+                console.log("qqqqqqqqq");
+                Alert.alert("User Already Registered!");
+            }
         }
     };
 
@@ -192,6 +225,9 @@ export const SignUpScreen = ({ navigation }) => {
                         </View>
                     </View>
 
+                    {checkedError ? <Text style={styles.errorText}>{checkedError}</Text> : null}
+
+
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 30 }}>
                         <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center", }]} onPress={handleSignUp}>
                             <View>
@@ -251,6 +287,6 @@ const styles = StyleSheet.create({
         color: 'red',
         alignSelf: 'flex-start',
         marginLeft: 45,
-        marginBottom: 5,
+        marginBottom: 0,
     },
 });
