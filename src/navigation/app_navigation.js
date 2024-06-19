@@ -14,16 +14,17 @@ export const AppNavigation = () => {
       style={{ flex: 1,}}
     >
       <Tab.Navigator
+        labeled={false}
         activeColor='white'
         activeIndicatorStyle={{ backgroundColor: "transparent" }}
-        barStyle={{ backgroundColor: "transparent", height: "8%" }}
+        barStyle={{ backgroundColor: "transparent", alignItems:"center", justifyContent:"center", height:"7%" }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             let iconName;
 
             if (route.name === "HomeScreen") {
               iconName = "home";
-              size=25;
+              size=27;
             } else if (route.name === "Search") {
               iconName = "search"; // Corrected icon name
               size=25;
