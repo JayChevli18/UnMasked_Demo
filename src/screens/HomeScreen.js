@@ -8,9 +8,8 @@ import OCIcon from "react-native-vector-icons/Octicons";
 import FAIcon from "react-native-vector-icons/FontAwesome";
 import FEIcon from "react-native-vector-icons/Feather";
 import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-native-popup-menu";
-import Carousel from 'react-native-reanimated-carousel';
+import PagerView from 'react-native-pager-view';
 import PaginationDot from 'react-native-dots-pagination';
-
 
 export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -37,7 +36,10 @@ export const HomeScreen = ({ navigation }) => {
         avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
         time: "2 mins ago"
       },
-      image: 'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
+      images: [
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg'
+      ],
       likes: 120,
       description: 'Delicious homemade burgers!Delicious home made burgers',
       comments: [
@@ -52,7 +54,10 @@ export const HomeScreen = ({ navigation }) => {
         avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
         time: "9 mins ago"
       },
-      image: 'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
+      images: [
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2020/08/detail-of-pavlova-strawberry-piece-of-cake-600x800.jpg'
+      ],
       likes: 89,
       description: 'Burgers for dinner!',
       comments: [
@@ -105,22 +110,24 @@ export const HomeScreen = ({ navigation }) => {
           </Menu>
         </View>
       </View>
-      {/* Post Image */}
+      {/* Post Images */}
 
-      <View style={{ borderRadius: 10, overflow: "hidden", marginBottom:5 }}>
+      <PagerView style={{ height: 400 }} initialPage={0}>
+        {post.images.map((image, index) => (
+          <View key={index} style={{ borderRadius: 10, overflow: "hidden", marginBottom: 5 }}>
+            <ImageBackground source={{ uri: image }} style={styles.postImage}>
+              <TouchableHighlight style={{ borderRadius: 10, backgroundColor: "rgba(255,255,255,0.3)", borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 5, margin: 15 }} onPress={() => { console.log("cl") }}>
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                  <FAIcon name="dollar" size={14} style={{ color: "white", marginRight: 10 }}></FAIcon>
+                  <Text style={{ fontWeight: "bold", color: "white" }}>Tip Creator</Text>
+                </View>
+              </TouchableHighlight>
+            </ImageBackground>
+          </View>
+        ))}
+      </PagerView>
 
-        <ImageBackground source={{ uri: post.image }} style={styles.postImage}>
-          <TouchableHighlight style={{ borderRadius: 10, backgroundColor:"rgba(255,255,255,0.3)" ,borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 5, margin: 15 }} onPress={() => { console.log("cl") }}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-              <FAIcon name="dollar" size={14} style={{ color: "white", marginRight: 10 }}></FAIcon>
-              <Text style={{ fontWeight: "bold", color: "white" }}>Tip Creator</Text>
-            </View>
-          </TouchableHighlight>
-        </ImageBackground>
-
-      </View>
-
-      <Text style={{ color: "black", fontWeight: "500" }}>{post.description}</Text>
+      <Text style={{ color: "black", fontWeight: "500", marginTop:5 }}>{post.description}</Text>
 
       {/* Post Footer */}
       <View style={styles.postFooter}>
