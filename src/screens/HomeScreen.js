@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, TextInput } from "react-native";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/authSlice";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -10,9 +10,14 @@ import FEIcon from "react-native-vector-icons/Feather";
 import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 import PagerView from 'react-native-pager-view';
 import PaginationDot from 'react-native-dots-pagination';
+import LinearGradient from "react-native-linear-gradient";
+import { ToggleButton } from "react-native-paper";
+import { BlurView } from "@react-native-community/blur";
 
 export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   const onLogout = () => {
     dispatch(logoutUser());
@@ -37,6 +42,9 @@ export const HomeScreen = ({ navigation }) => {
         time: "2 mins ago"
       },
       images: [
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
         'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
         'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
         'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
@@ -70,9 +78,9 @@ export const HomeScreen = ({ navigation }) => {
   ];
 
   const StoryItem = ({ story }) => (
-    <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { console.log("cl", story.id) }}>
+    <TouchableHighlight style={styles.storyItem} underlayColor="#ffffffd8" onPress={() => { console.log("cl", story.id) }}>
       <View style={{ alignItems: 'center' }}>
-        <View style={[styles.imageContainer, {borderWidth: 2}]}>
+        <View style={[styles.imageContainer, { borderWidth: 2 }]}>
           <Image source={{ uri: story.image }} style={styles.storyImage} />
         </View>
         <Text style={styles.storyName}>{story.name}</Text>
@@ -82,9 +90,9 @@ export const HomeScreen = ({ navigation }) => {
 
   const YourStory = () => (
     <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { console.log("Add to your story") }}>
-      <View style={{ alignItems: 'center', justifyContent: "center", paddingTop:4 }}>
-        <View style={[styles.imageContainer, {backgroundColor:"#97979794", }]}>
-          <View style={[styles.storyImage, { alignItems: "center", justifyContent: "center"}]}>
+      <View style={{ alignItems: 'center', justifyContent: "center", paddingTop: 4 }}>
+        <View style={[styles.imageContainer, { backgroundColor: "#97979794", }]}>
+          <View style={[styles.storyImage, { alignItems: "center", justifyContent: "center" }]}>
             <Icon name="add" size={40} color="#696969" />
           </View>
         </View>
@@ -92,6 +100,134 @@ export const HomeScreen = ({ navigation }) => {
       </View>
     </TouchableHighlight>
   );
+
+
+  const TipCreatorModal = () => {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{ fontSize: 25, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Tip Creator</Text>
+            <Text style={{ marginTop: 10, alignSelf: "center", marginBottom: 15, width: 300, textAlign: "center" }}>Support this creator by saying thanks</Text>
+
+            <View style={{
+              borderRadius: 3,
+
+              marginHorizontal: 10,
+              width: 280,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 1,
+              shadowRadius: 2,
+              elevation: 5, // This elevation is for Android
+              backgroundColor: 'white', // Set background color to see shadow effect
+              padding: 10, // Optional: Add padding for better appearance
+            }}>
+              <TextInput
+                placeholder="Add your message"
+                multiline={true}
+                editable={true}
+                numberOfLines={5}
+                maxLength={250}
+                style={{
+                  width: '100%',
+                  textAlignVertical: 'top',
+                }}
+              />
+            </View>
+            <Text style={{ fontSize: 20, marginTop: 10, color: "black", fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>Tip Amount</Text>
+
+            <View style={{ flexDirection: "row", gap: 15 }}>
+              <ToggleButton
+                icon={() => <Text style={{ color: selected === '100' ? "white" : "black", fontSize: 16 }}>$100</Text>}
+                value="100"
+                status={selected === '100' ? 'checked' : 'unchecked'}
+                onPress={() => setSelected(selected === '100' ? null : '100')}
+                style={{
+                  borderRadius: 20,
+                  borderColor: "lightgray",
+                  borderWidth: 3,
+                  backgroundColor: selected === '100' ? '#BF9EF2' : 'white',
+                  padding: 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30%"
+                }}
+              />
+              <ToggleButton
+                icon={() => <Text style={{ color: selected === '200' ? "white" : "black", fontSize: 16 }}>$200</Text>}
+                value="200"
+                status={selected === '200' ? 'checked' : 'unchecked'}
+                onPress={() => setSelected(selected === '200' ? null : '200')}
+                style={{
+                  borderRadius: 20,
+                  borderColor: "lightgray",
+                  borderWidth: 3,
+                  backgroundColor: selected === '200' ? '#BF9EF2' : 'white',
+                  padding: 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30%"
+                }}
+              />
+            </View>
+            <View style={{ flexDirection: "row", gap: 15, marginTop: 10 }}>
+              <ToggleButton
+                icon={() => <Text style={{ color: selected === '300' ? "white" : "black", fontSize: 16 }}>$300</Text>}
+                value="300"
+                status={selected === '300' ? 'checked' : 'unchecked'}
+                onPress={() => setSelected(selected === '300' ? null : '300')}
+                style={{
+                  borderRadius: 20,
+                  borderColor: "lightgray",
+                  borderWidth: 3,
+                  backgroundColor: selected === '300' ? '#BF9EF2' : 'white',
+                  padding: 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30%"
+                }}
+              />
+              <ToggleButton
+                icon={() => <Text style={{ color: selected === '400' ? "white" : "black", fontSize: 16 }}>$400</Text>}
+                value="400"
+                status={selected === '400' ? 'checked' : 'unchecked'}
+                onPress={() => setSelected(selected === '400' ? null : '400')}
+                style={{
+                  borderRadius: 20,
+                  borderColor: "lightgray",
+                  borderWidth: 3,
+                  backgroundColor: selected === '400' ? '#BF9EF2' : 'white',
+                  padding: 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "30%"
+                }}
+              />
+            </View>
+
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, marginBottom: 5, alignSelf: "center" }}>
+              <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]} onPress={() => setModalVisible(!modalVisible)}>
+                <View>
+                  <Text style={{ color: "white", fontSize: 18 }}>Tip Creator</Text>
+                </View>
+              </TouchableHighlight>
+            </LinearGradient>
+          </View>
+        </View>
+
+
+      </Modal>
+    )
+  }
+
 
   const Post = ({ post }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -119,7 +255,7 @@ export const HomeScreen = ({ navigation }) => {
                 },
 
               }}>
-                <MenuOption style={{ flexDirection: "row", justifyContent: "center" }} onSelect={() => console.log("Report User")}>
+                <MenuOption style={{ flexDirection: "row", justifyContent: "center" }} onSelect={onLogout}>
                   <OCIcon name="report" size={25} style={{ marginRight: 20 }}></OCIcon>
                   <Text style={{ fontSize: 15 }}>Report User</Text>
                 </MenuOption>
@@ -133,7 +269,7 @@ export const HomeScreen = ({ navigation }) => {
           {post.images.map((image, index) => (
             <View key={index} style={{ borderRadius: 10, overflow: "hidden", marginBottom: 5 }}>
               <ImageBackground source={{ uri: image }} style={styles.postImage}>
-                <TouchableHighlight style={{ borderRadius: 10, backgroundColor: "rgba(255, 255, 255, 0.384)", borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 3, marginRight: 15 }} onPress={() => { console.log("cl") }}>
+                <TouchableHighlight style={{ top: 10, borderRadius: 10, backgroundColor: "rgba(255, 255, 255, 0.384)", borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 3, marginRight: 15 }} onPress={() => { setModalVisible(true) }}>
                   <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                     <FAIcon name="dollar" size={14} style={{ color: "white", marginRight: 5 }}></FAIcon>
                     <Text style={{ fontWeight: "bold", color: "white" }}>Tip Creator</Text>
@@ -197,6 +333,13 @@ export const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <MenuProvider>
         <View>
+        { modalVisible && <BlurView
+                  style={{position:"absolute", height:"100%", width:"100%"}}
+                  blurType="light"
+                  blurAmount={1}
+                  reducedTransparencyFallbackColor="red"
+        />}       
+
           <FlatList
             data={posts}
             renderItem={({ item }) => <Post post={item} />}
@@ -204,6 +347,7 @@ export const HomeScreen = ({ navigation }) => {
             ListHeaderComponent={renderHeader}
             showsVerticalScrollIndicator={false}
           />
+          <TipCreatorModal></TipCreatorModal>
         </View>
       </MenuProvider>
     </SafeAreaView>
@@ -309,5 +453,36 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingBottom: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 20,
+  },
+  toggleButton: {
+    borderRadius: 20,
+    borderColor: "lightgray",
+    borderWidth: 3,
+    backgroundColor: "transparent",
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "40%",
   },
 });
