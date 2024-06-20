@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground } from "react-native";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/authSlice";
@@ -38,6 +38,8 @@ export const HomeScreen = ({ navigation }) => {
       },
       images: [
         'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
+        'https://www.foodiesfeed.com/wp-content/uploads/2019/04/mae-mu-baking-600x750.jpg',
         'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg'
       ],
       likes: 120,
@@ -70,7 +72,7 @@ export const HomeScreen = ({ navigation }) => {
   const StoryItem = ({ story }) => (
     <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { console.log("cl", story.id) }}>
       <View style={{ alignItems: 'center' }}>
-        <View style={styles.imageContainer}>
+        <View style={[styles.imageContainer, {borderWidth: 2}]}>
           <Image source={{ uri: story.image }} style={styles.storyImage} />
         </View>
         <Text style={styles.storyName}>{story.name}</Text>
@@ -78,73 +80,100 @@ export const HomeScreen = ({ navigation }) => {
     </TouchableHighlight>
   );
 
-  const Post = ({ post }) => (
-    <View style={styles.postContainer}>
-      {/* Post Header */}
-      <View style={styles.postHeader}>
-        <View style={{ flexDirection: "row" }}>
-          <Image source={{ uri: post.user.avatar }} style={styles.avatar} />
-          <View>
-            <Text style={styles.username}>{post.user.username}</Text>
-            <Text style={{ fontSize: 12 }}>{post.user.time}</Text>
+  const YourStory = () => (
+    <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { console.log("Add to your story") }}>
+      <View style={{ alignItems: 'center', justifyContent: "center", paddingTop:4 }}>
+        <View style={[styles.imageContainer, {backgroundColor:"#97979794", }]}>
+          <View style={[styles.storyImage, { alignItems: "center", justifyContent: "center"}]}>
+            <Icon name="add" size={40} color="#696969" />
           </View>
         </View>
-        <View style={{ alignSelf: "flex-end", justifyContent: "flex-end" }}>
-          <Menu>
-            <MenuTrigger>
-              <MCIcon name="dots-horizontal" size={35}></MCIcon>
-            </MenuTrigger>
-            <MenuOptions customStyles={{
-              optionsContainer: {
-                marginTop: 30, // Adjust this value as needed to position the menu correctly
-                borderRadius: 8,
-                padding: 5,
-              },
-
-            }}>
-              <MenuOption style={{ flexDirection: "row", justifyContent: "center" }} onSelect={() => console.log("Report User")}>
-                <OCIcon name="report" size={25} style={{ marginRight: 20 }}></OCIcon>
-                <Text style={{ fontSize: 15 }}>Report User</Text>
-              </MenuOption>
-            </MenuOptions>
-          </Menu>
-        </View>
+        <Text style={styles.storyName}>Your Story</Text>
       </View>
-      {/* Post Images */}
+    </TouchableHighlight>
+  );
 
-      <PagerView style={{ height: 400 }} initialPage={0}>
-        {post.images.map((image, index) => (
-          <View key={index} style={{ borderRadius: 10, overflow: "hidden", marginBottom: 5 }}>
-            <ImageBackground source={{ uri: image }} style={styles.postImage}>
-              <TouchableHighlight style={{ borderRadius: 10, backgroundColor: "rgba(255,255,255,0.3)", borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 5, margin: 15 }} onPress={() => { console.log("cl") }}>
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                  <FAIcon name="dollar" size={14} style={{ color: "white", marginRight: 10 }}></FAIcon>
-                  <Text style={{ fontWeight: "bold", color: "white" }}>Tip Creator</Text>
-                </View>
-              </TouchableHighlight>
-            </ImageBackground>
+  const Post = ({ post }) => {
+    const [currentPage, setCurrentPage] = useState(0);
+    return (
+      <View style={styles.postContainer}>
+        {/* Post Header */}
+        <View style={styles.postHeader}>
+          <View style={{ flexDirection: "row" }}>
+            <Image source={{ uri: post.user.avatar }} style={styles.avatar} />
+            <View>
+              <Text style={styles.username}>{post.user.username}</Text>
+              <Text style={{ fontSize: 12 }}>{post.user.time}</Text>
+            </View>
           </View>
-        ))}
-      </PagerView>
+          <View style={{ alignSelf: "flex-end", justifyContent: "flex-end" }}>
+            <Menu>
+              <MenuTrigger>
+                <MCIcon name="dots-horizontal" size={35}></MCIcon>
+              </MenuTrigger>
+              <MenuOptions customStyles={{
+                optionsContainer: {
+                  marginTop: 30, // Adjust this value as needed to position the menu correctly
+                  borderRadius: 8,
+                  padding: 5,
+                },
 
-      <Text style={{ color: "black", fontWeight: "500", marginTop:5 }}>{post.description}</Text>
-
-      {/* Post Footer */}
-      <View style={styles.postFooter}>
-        <View style={styles.actionIcons}>
-          <Icon name="favorite-border" size={25} style={styles.icon} />
-          <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
-          <Icon name="chat-bubble-outline" size={25} style={styles.icon} />
-          <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
-          <FEIcon name="send" size={25} style={styles.icon} />
+              }}>
+                <MenuOption style={{ flexDirection: "row", justifyContent: "center" }} onSelect={() => console.log("Report User")}>
+                  <OCIcon name="report" size={25} style={{ marginRight: 20 }}></OCIcon>
+                  <Text style={{ fontSize: 15 }}>Report User</Text>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
+          </View>
         </View>
-        {/* <Text style={styles.description}><Text style={styles.username}>{post.user.username} </Text>{post.description}</Text>
+        {/* Post Images */}
+
+        <PagerView style={{ height: 400 }} initialPage={0} onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
+          {post.images.map((image, index) => (
+            <View key={index} style={{ borderRadius: 10, overflow: "hidden", marginBottom: 5 }}>
+              <ImageBackground source={{ uri: image }} style={styles.postImage}>
+                <TouchableHighlight style={{ borderRadius: 10, backgroundColor: "rgba(255, 255, 255, 0.384)", borderWidth: 1, borderColor: "white", alignSelf: "flex-end", padding: 3, marginRight: 15 }} onPress={() => { console.log("cl") }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                    <FAIcon name="dollar" size={14} style={{ color: "white", marginRight: 5 }}></FAIcon>
+                    <Text style={{ fontWeight: "bold", color: "white" }}>Tip Creator</Text>
+                  </View>
+                </TouchableHighlight>
+                <PaginationDot
+                  active={currentPage}
+                  length={post.images.length}
+                  activeColor="#ffffff"
+                  passiveDotWidth={7}
+                  passiveDotHeight={7}
+                  activeDotWidth={10}
+                  activeDotHeight={10}
+                  passiveColor="#ffffffc0"
+                ></PaginationDot>
+
+              </ImageBackground>
+            </View>
+          ))}
+        </PagerView>
+
+        <Text style={{ color: "black", fontWeight: "500", marginTop: 5 }}>{post.description}</Text>
+
+        {/* Post Footer */}
+        <View style={styles.postFooter}>
+          <View style={styles.actionIcons}>
+            <Icon name="favorite-border" size={25} style={styles.icon} />
+            <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
+            <Icon name="chat-bubble-outline" size={25} style={styles.icon} />
+            <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
+            <FEIcon name="send" size={25} style={styles.icon} />
+          </View>
+          {/* <Text style={styles.description}><Text style={styles.username}>{post.user.username} </Text>{post.description}</Text>
         {post.comments.map(comment => (
           <Text key={comment.id} style={styles.comment}><Text style={styles.username}>{comment.username} </Text>{comment.comment}</Text>
         ))} */}
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -155,8 +184,8 @@ export const HomeScreen = ({ navigation }) => {
 
       <FlatList
         horizontal
-        data={stories}
-        renderItem={({ item }) => <StoryItem story={item} />}
+        data={[{ id: 'your_story' }, ...stories]}
+        renderItem={({ item }) => item.id === 'your_story' ? <YourStory /> : <StoryItem story={item} />}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.storiesContainer}
@@ -204,8 +233,16 @@ const styles = StyleSheet.create({
   imageContainer: {
     padding: 3, // Padding between image and border
     borderRadius: 60,
-    borderWidth: 2,
-    borderColor: '#979797', // Instagram-like border color
+    borderColor: '#97979794', // Instagram-like border color
+  },
+  yourStoryContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#cacaca',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 3
   },
   storyImage: {
     width: 60,
