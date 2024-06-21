@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, TextInput } from "react-native";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/authSlice";
@@ -18,10 +18,15 @@ export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [paymentModalVisible, setPaymentModalVisible]=useState(false);
 
   const onLogout = () => {
     dispatch(logoutUser());
   };
+
+  useEffect(()=>{
+    setPaymentModalVisible(true);
+  },[])
 
   const stories = [
     { id: '1', image: "https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg", name: 'ulomplad' },
@@ -101,6 +106,33 @@ export const HomeScreen = ({ navigation }) => {
     </TouchableHighlight>
   );
 
+
+  const PaymentModal = () => {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={paymentModalVisible}
+        onRequestClose={() => {
+          setPaymentModalVisible(!paymentModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{ fontSize: 25, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Add Payment Method</Text>
+            <Text style={{ marginTop: 10, alignSelf: "center", marginBottom: 15, width: 300, textAlign: "center" }}>No payment method was found, please add your payment method</Text>
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, marginBottom: 5, alignSelf: "center" }}>
+              <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]} onPress={() => setModalVisible(!modalVisible)}>
+                <View>
+                  <Text style={{ color: "white", fontSize: 18 }}>Add Payment Method</Text>
+                </View>
+              </TouchableHighlight>
+            </LinearGradient>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
 
   const TipCreatorModal = () => {
     return (
@@ -333,12 +365,12 @@ export const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <MenuProvider>
         <View>
-        { modalVisible && <BlurView
-                  style={{position:"absolute", height:"100%", width:"100%"}}
-                  blurType="light"
-                  blurAmount={1}
-                  reducedTransparencyFallbackColor="red"
-        />}       
+          {(modalVisible || paymentModalVisible ) && <BlurView
+            style={{ position: "absolute", height: "100%", width: "100%" }}
+            blurType="light"
+            blurAmount={1}
+            reducedTransparencyFallbackColor="red"
+          />}
 
           <FlatList
             data={posts}
@@ -347,6 +379,7 @@ export const HomeScreen = ({ navigation }) => {
             ListHeaderComponent={renderHeader}
             showsVerticalScrollIndicator={false}
           />
+          <PaymentModal></PaymentModal>
           <TipCreatorModal></TipCreatorModal>
         </View>
       </MenuProvider>
