@@ -8,7 +8,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { Card } from "react-native-paper";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
     const posts = [
         {
             id: '1',
@@ -189,11 +189,13 @@ export const ProfileScreen = () => {
                                                     width: "40%"
                                                 },
                                             }}>
-                                                <MenuOption style={{justifyContent:"center"}} onSelect={() => { console.log("f") }}>
+                                                <MenuOption style={{justifyContent:"center"}} onSelect={() => { navigation.navigate("MoreScreen") }}>
                                                     <View style={{ flexDirection: "row", }}>
                                                         <FEIcon name="settings" size={25} style={{ marginRight: 20, alignSelf: "flex-start" }}></FEIcon>
                                                         <Text style={{ fontSize: 15, }}>More</Text>
                                                     </View>
+                                                </MenuOption>
+                                                <MenuOption>
                                                     <View style={{ flexDirection: "row", marginTop:10}}>
                                                         <MCIcon name="logout" size={25} style={{ marginRight: 20, alignSelf: "flex-start" }}></MCIcon>
                                                         <Text style={{ fontSize: 15, }}>Logout</Text>
