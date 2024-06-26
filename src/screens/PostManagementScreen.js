@@ -93,7 +93,7 @@ export const PostManagementScreen = () => {
                     </View>
                 </View>
             </ScrollView>
-            <View style={{ margin: 10, position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center', }}>
+            <View style={{ margin: 20, position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center', }}>
                 <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: "100%", alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, alignSelf: "center" }}>
                     <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", width: "100%", alignItems: "center", height: 40, justifyContent: "center" }} onPress={() => { console.log("VV") }}>
                         <View>
