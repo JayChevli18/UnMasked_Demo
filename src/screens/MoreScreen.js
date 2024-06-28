@@ -16,11 +16,13 @@ export const MoreScreen = ({navigation}) => {
         { id: '6', title: 'Transaction History', icon: 'history', type: 'material-community' },
         { id: '7', title: 'Subscription price', icon: 'tag-multiple-outline', type: 'material-community' },
         { id: '8', title: 'Support', icon: 'question', type: 'simple-line-icon' },
+        { id: '9', title: 'Subscribers', icon: 'chatbubbles-outline', type: 'ionicon' },
+        { id: '10', title: 'Followers', icon: 'chatbubbles-outline', type: 'ionicon' },
+
     ];
     return (
         <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
             <FlatList
-                style={{ marginTop: 5 }}
                 data={data}
                 renderItem={({ item }) => (
                     <TouchableHighlight onPress={()=>{navigation.navigate(item.title)}}>
