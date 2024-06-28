@@ -13,7 +13,7 @@ export const Home_Navigation=()=>{
             <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
             <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
             <Stack.Screen name="ExtraScreen" component={ExtraScreen} />
-            <Stack.Screen name="MoreScreen" component={More_Navigation} />
+            {/* <Stack.Screen name="MoreScreen" component={More_Navigation} /> */}
         </Stack.Navigator>
     )
 }

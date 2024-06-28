@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import LinearGradient from 'react-native-linear-gradient';
 import { Home_Navigation } from "./home_navigation";
 import { ProfileScreen } from "../screens/ProfileScreen";
+import { More_Navigation } from "./more_navigation";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -49,7 +50,7 @@ export const AppNavigation = () => {
         <Tab.Screen name="HomeScreenMain" component={Home_Navigation} />
         <Tab.Screen name="Search" component={HomeScreen} />
         <Tab.Screen name="Chat" component={HomeScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Profile" component={More_Navigation} />
       </Tab.Navigator>
     </LinearGradient>
   );
