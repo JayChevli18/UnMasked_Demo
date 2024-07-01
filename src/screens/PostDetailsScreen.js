@@ -79,11 +79,11 @@ export const PostDetailsScreen = ({ route }) => {
                 </FlatList>
             </ScrollView>
 
-            <View style={{ alignItems: 'center' }}>
+            <View style={styles.textInput}>
                 <TextInput
                     placeholder="Send a message"
-                    placeholderTextColor="grey"
                     style={styles.textInput}
+                    placeholderTextColor="grey"
                     left={
                         <TextInput.Icon
                             icon={() => (<Image source={{ uri: post }} style={styles.storyImage}></Image>)}
@@ -152,6 +152,8 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 10,
         width: "100%",
+        borderRadius:20,
+        overflow:"hidden",
     },
 
 })

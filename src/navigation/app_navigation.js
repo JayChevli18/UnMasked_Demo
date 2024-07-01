@@ -7,6 +7,7 @@ import { Home_Navigation } from "./home_navigation";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { More_Navigation } from "./more_navigation";
 import { OtherUserProfileScreen } from "../screens/OtherUserProfileScreen";
+import { SearchScreen } from "../screens/SearchScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -49,8 +50,8 @@ export const AppNavigation = () => {
         })}
       >
         <Tab.Screen name="HomeScreenMain" component={Home_Navigation} />
-        <Tab.Screen name="Search" component={OtherUserProfileScreen} />
-        <Tab.Screen name="Chat" component={HomeScreen} />
+        <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Screen name="Chat" component={OtherUserProfileScreen} />
         <Tab.Screen name="Profile" component={More_Navigation} />
       </Tab.Navigator>
     </LinearGradient>
