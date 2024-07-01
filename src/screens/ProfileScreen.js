@@ -134,7 +134,7 @@ export const ProfileScreen = ({navigation}) => {
                     data={posts[0].images} // Assuming posts is passed as a prop
                     renderItem={({ item }) => (
                         <View style={{ width: itemSize, height: itemSize, margin: 1 }}>
-                            <TouchableHighlight underlayColor="white" onPress={()=>{navigation.navigate("PostDetails")}}>
+                            <TouchableHighlight underlayColor="white" onPress={()=>{navigation.navigate("Post", {post:item})}}>
                             <Image
                                 source={{ uri: item }}
                                 style={{
