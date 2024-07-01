@@ -347,7 +347,9 @@ export const HomeScreen = ({ navigation }) => {
     <View style={styles.header}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Image source={require('../../assets/Frame.png')} style={styles.microImage} />
-        <Icon name="notifications-none" size={30} style={styles.microImage} />
+        <TouchableHighlight style={{borderRadius:20}} underlayColor="lightgrey" onPress={()=>{navigation.navigate("Notification")}}>
+            <Icon name="notifications-none" size={30} style={styles.microImage} />
+        </TouchableHighlight>
       </View>
 
       <FlatList

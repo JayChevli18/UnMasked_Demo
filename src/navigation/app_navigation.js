@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Home_Navigation } from "./home_navigation";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { More_Navigation } from "./more_navigation";
+import { OtherUserProfileScreen } from "../screens/OtherUserProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -48,7 +49,7 @@ export const AppNavigation = () => {
         })}
       >
         <Tab.Screen name="HomeScreenMain" component={Home_Navigation} />
-        <Tab.Screen name="Search" component={HomeScreen} />
+        <Tab.Screen name="Search" component={OtherUserProfileScreen} />
         <Tab.Screen name="Chat" component={HomeScreen} />
         <Tab.Screen name="Profile" component={More_Navigation} />
       </Tab.Navigator>
