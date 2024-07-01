@@ -38,7 +38,7 @@ export const PostDetailsScreen = ({ route }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white", padding: 20, }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "white", padding: 20,  }}>
             <ScrollView>
                 <View style={{ borderRadius: 10, overflow: "hidden", marginBottom: 5 }}>
                     <ImageBackground source={{ uri: post }} style={styles.postImage}>

@@ -14,14 +14,15 @@ import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import OCIcon from "react-native-vector-icons/Octicons";
 import AIcon from "react-native-vector-icons/AntDesign";
+import { EditPostScreen } from "../screens/EditPostScreen";
 
 const Stack = createStackNavigator();
 
 
-export const More_Navigation = () => {
+export const More_Navigation = ({ navigation }) => {
 
-    const EditPost = () => (
-        <Menu style={{paddingRight:8}}>
+    const EditPost = ({post}) => (
+        <Menu style={{ paddingRight: 8 }}>
             <MenuTrigger style={{ padding: 8 }}>
                 <MCIcon name="dots-horizontal" size={35}></MCIcon>
             </MenuTrigger>
@@ -33,11 +34,11 @@ export const More_Navigation = () => {
                 },
 
             }}>
-                <MenuOption style={{ flexDirection: "row",  padding:8 }} >
+                <MenuOption style={{ flexDirection: "row", padding: 8 }} onSelect={() => { navigation.navigate("EditPost", {post}) }}>
                     <OCIcon name="pencil" size={20} style={{ marginRight: 20 }}></OCIcon>
                     <Text style={{ fontSize: 16 }}>Edit</Text>
                 </MenuOption>
-                <MenuOption style={{ flexDirection: "row",  padding:8 }}>
+                <MenuOption style={{ flexDirection: "row", padding: 8 }}>
                     <AIcon name="delete" size={20} style={{ marginRight: 20 }}></AIcon>
                     <Text style={{ fontSize: 16 }}>Delete</Text>
                 </MenuOption>
@@ -57,8 +58,8 @@ export const More_Navigation = () => {
                 <Stack.Screen name="Analytics" component={AnalyticsScreen} />
                 <Stack.Screen name="Subscribers" component={SubscribersScreen} />
                 <Stack.Screen name="Followers" component={FollowersScreen} />
-                <Stack.Screen name="Post" component={PostDetailsScreen} options={{ headerRight: () => (<EditPost></EditPost>) }} />
-
+                <Stack.Screen name="Post" component={PostDetailsScreen} options={({route})=>({ headerRight: () => (<EditPost post={route.params.post}></EditPost>) })} />
+                <Stack.Screen name="EditPost" component={EditPostScreen} />
             </Stack.Navigator>
         </MenuProvider>
 
