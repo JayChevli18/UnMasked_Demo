@@ -8,6 +8,7 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { More_Navigation } from "./more_navigation";
 import { OtherUserProfileScreen } from "../screens/OtherUserProfileScreen";
 import { SearchScreen } from "../screens/SearchScreen";
+import { AddNewPostScreen } from "../screens/AddNewPostScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -34,7 +35,12 @@ export const AppNavigation = () => {
               iconName = "search"; // Corrected icon name
               size=25;
 
-            } else if (route.name === "Chat") {
+            } else if (route.name === "Add") {
+              iconName = "plus-circle"; // Corrected icon name
+              size=29;
+
+            }
+             else if (route.name === "Chat") {
                 size=25;
 
                 iconName = "heart";
@@ -51,6 +57,7 @@ export const AppNavigation = () => {
       >
         <Tab.Screen name="HomeScreenMain" component={Home_Navigation} />
         <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Screen name="Add" component={AddNewPostScreen} />
         <Tab.Screen name="Chat" component={OtherUserProfileScreen} />
         <Tab.Screen name="Profile" component={More_Navigation} />
       </Tab.Navigator>
