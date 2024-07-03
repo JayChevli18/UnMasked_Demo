@@ -117,7 +117,7 @@ const ImageGrid = ({ onSelectImage, selectedImages }) => {
     );
 };
 
-export const AddNewPostScreen = () => {
+export const AddNewPostScreen = ({navigation}) => {
     const [selectedImages, setSelectedImages] = useState([]);
 
     const onSelectImage = (newSelectedImages) => {
@@ -169,7 +169,7 @@ export const AddNewPostScreen = () => {
             </ScrollView>
             <View style={{ padding: 20, position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center' }}>
                 <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: "100%", alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, alignSelf: "center" }}>
-                    <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", width: "100%", alignItems: "center", height: 40, justifyContent: "center" }} onPress={uploadImages}>
+                    <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", width: "100%", alignItems: "center", height: 40, justifyContent: "center" }} onPress={()=>{navigation.navigate("Upload Post", {selectedImages})}}>
                         <View>
                             <Text style={{ color: "white", fontSize: 18 }}>Next</Text>
                         </View>

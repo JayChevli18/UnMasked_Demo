@@ -9,6 +9,7 @@ import { More_Navigation } from "./more_navigation";
 import { OtherUserProfileScreen } from "../screens/OtherUserProfileScreen";
 import { SearchScreen } from "../screens/SearchScreen";
 import { AddNewPostScreen } from "../screens/AddNewPostScreen";
+import { UploadPost_Navigation } from "./uploadpost_navigation";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -57,7 +58,7 @@ export const AppNavigation = () => {
       >
         <Tab.Screen name="HomeScreenMain" component={Home_Navigation} />
         <Tab.Screen name="Search" component={SearchScreen} />
-        <Tab.Screen name="Add" component={AddNewPostScreen} />
+        <Tab.Screen name="Add" component={UploadPost_Navigation} />
         <Tab.Screen name="Chat" component={OtherUserProfileScreen} />
         <Tab.Screen name="Profile" component={More_Navigation} />
       </Tab.Navigator>
