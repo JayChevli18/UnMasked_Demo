@@ -16,6 +16,7 @@ import OCIcon from "react-native-vector-icons/Octicons";
 import AIcon from "react-native-vector-icons/AntDesign";
 import { EditPostScreen } from "../screens/EditPostScreen";
 import { BundlesScreen } from "../screens/BundlesScreen";
+import { MessagesScreen } from "../screens/MessagesScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,7 @@ export const More_Navigation = ({ navigation }) => {
                 <Stack.Screen name="Post" component={PostDetailsScreen} options={({route})=>({ headerRight: () => (<EditPost post={route.params.post}></EditPost>) })} />
                 <Stack.Screen name="EditPost" component={EditPostScreen} />
                 <Stack.Screen name="Bundles" component={BundlesScreen} />
+                <Stack.Screen name="Messages" component={MessagesScreen} options={{headerShown:false}}/>
             </Stack.Navigator>
         </MenuProvider>
 
