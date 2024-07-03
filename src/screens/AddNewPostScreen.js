@@ -36,6 +36,9 @@ const ImageGrid = ({ onSelectImage, selectedImages }) => {
                 if (photosResponse.edges.length < 20) {
                     setNoMorePhotos(true);
                 }
+                if (selectedImages.length === 0 && photosResponse.edges.length > 0) {
+                    onSelectImage([{ uri: photosResponse.edges[0].node.image.uri }]);
+                }
             } else {
                 setNoMorePhotos(true);
             }
