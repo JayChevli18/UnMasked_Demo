@@ -79,7 +79,7 @@ export const AddNewPostDetailsScreen = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 20 }}>
                     <View style={{ flex: 1, marginRight: 20 }}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, alignItems: "center", height: 40, justifyContent: "center", marginTop: 15, }}>
-                            <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", alignItems: "center", height: 40, justifyContent: "center", width: "100%" }} onPress={() => { console.log("ok") }}>
+                            <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", alignItems: "center", height: 40, justifyContent: "center", width: "100%" }} onPress={() => { navigation.navigate("Choose to send") }}>
                                 <View>
                                     <Text style={{ color: "white", fontSize: 18 }}>Send Privately</Text>
                                 </View>
