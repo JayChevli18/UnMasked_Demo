@@ -94,7 +94,7 @@ export const HomeScreen = ({ navigation }) => {
   );
 
   const YourStory = () => (
-    <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { console.log("Add to your story") }}>
+    <TouchableHighlight style={styles.storyItem} underlayColor="white" onPress={() => { navigation.navigate("YourStory") }}>
       <View style={{ alignItems: 'center', justifyContent: "center", paddingTop: 4 }}>
         <View style={[styles.imageContainer, { backgroundColor: "#97979794", }]}>
           <View style={[styles.storyImage, { alignItems: "center", justifyContent: "center" }]}>
