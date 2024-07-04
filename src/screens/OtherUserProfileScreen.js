@@ -8,7 +8,7 @@ import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-
 import LinearGradient from "react-native-linear-gradient";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { BlurView } from "@react-native-community/blur";
-
+//import LinearGradient from "react-native-linear-gradient";
 export const OtherUserProfileScreen = ({ navigation }) => {
     const posts = [
         {
@@ -181,17 +181,19 @@ export const OtherUserProfileScreen = ({ navigation }) => {
         );
     };
     const SubscriptionRoute = () => (
-        <View style={{ alignItems: "center", justifyContent: "center", marginTop:80}}>
-            <Text>You have not subscribed any creators.</Text>
-            <Text>Subscribed now to your favourite creators.</Text>
-            <View style={{ flex: 1, marginRight: 5,width:"80%" }}>
-                <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, alignItems: "center", height: 40, justifyContent: "center", marginTop: 15, padding:10}}>
-                    <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", alignItems: "center", height: 40, justifyContent: "center", width: "100%" }} onPress={() => { console.log("ok") }}>
-                        <View>
-                            <Text style={{ color: "white", fontSize: 18 }}>View Followers</Text>
-                        </View>
-                    </TouchableHighlight>
-                </LinearGradient>
+        <View style={{ flex: 1 }}>
+            <View style={{ alignItems: "center", justifyContent: "center", marginTop: 80, }}>
+                <Text>You have not subscribed any creators.</Text>
+                <Text>Subscribed now to your favourite creators.</Text>
+                <View style={{ flex: 1, marginRight: 5, width: "80%" }}>
+                    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, alignItems: "center", height: 40, justifyContent: "center", marginTop: 15, width: "100%" }}>
+                        <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", alignItems: "center", height: 40, justifyContent: "center", width: "100%" }} onPress={() => { console.log("ok") }}>
+                            <View>
+                                <Text style={{ color: "white", fontSize: 18 }}>View Followers</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </LinearGradient>
+                </View>
             </View>
         </View>
     );
@@ -206,7 +208,7 @@ export const OtherUserProfileScreen = ({ navigation }) => {
         { key: 'posts', title: 'Posts' },
         { key: 'bundles', title: 'Bundles' },
     ]);
-    
+
     return (
         <SafeAreaView style={{ flex: 1, }}>
             <ScrollView>
@@ -273,10 +275,19 @@ export const OtherUserProfileScreen = ({ navigation }) => {
                     </View>
                 </MenuProvider>
             </ScrollView>
-            
-            <MCIcon name="lock" size={100} color="white" style={{ position: "absolute", top: "80%", left: "50%", transform: [{ translateX: -50 }, { translateY: -50 }] }}></MCIcon>
 
-        </SafeAreaView> 
+            {index === 0 &&
+                <View style={{ position: "absolute", top: "80%", left: "50%", transform: [{ translateX: -50 }, { translateY: -50 }] }} >
+                    <View style={{ borderRadius: 70, padding:2,borderColor: "white", borderWidth:2 }}>
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 70, padding: 20, }} >
+                            <MCIcon name="lock" size={60} color="#ffffff" ></MCIcon>
+                        </LinearGradient>
+                    </View>
+                </View>
+
+            }
+
+        </SafeAreaView>
     );
 }
 
