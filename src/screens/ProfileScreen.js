@@ -7,6 +7,8 @@ import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-
 import LinearGradient from "react-native-linear-gradient";
 import { Card } from "react-native-paper";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "../store/authSlice";
 
 export const ProfileScreen = ({navigation}) => {
     const posts = [
@@ -58,6 +60,12 @@ export const ProfileScreen = ({navigation}) => {
             ]
         }
     ];
+
+    const dispatch=useDispatch();
+
+    const onLogout=()=>{
+        dispatch(logoutUser());
+    }
 
     const initialLayout = { width: Dimensions.get('window').width };
 
@@ -197,7 +205,7 @@ export const ProfileScreen = ({navigation}) => {
                                                         <Text style={{ fontSize: 15, }}>More</Text>
                                                     </View>
                                                 </MenuOption>
-                                                <MenuOption>
+                                                <MenuOption onSelect={onLogout}>
                                                     <View style={{ flexDirection: "row", marginTop:10}}>
                                                         <MCIcon name="logout" size={25} style={{ marginRight: 20, alignSelf: "flex-start" }}></MCIcon>
                                                         <Text style={{ fontSize: 15, }}>Logout</Text>
