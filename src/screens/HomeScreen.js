@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, TextInput } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, TextInput, ScrollView, Dimensions } from "react-native";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/authSlice";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -7,26 +7,33 @@ import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import OCIcon from "react-native-vector-icons/Octicons";
 import FAIcon from "react-native-vector-icons/FontAwesome";
 import FEIcon from "react-native-vector-icons/Feather";
+import EIcon from "react-native-vector-icons/Entypo";
 import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 import PagerView from 'react-native-pager-view';
 import PaginationDot from 'react-native-dots-pagination';
 import LinearGradient from "react-native-linear-gradient";
 import { ToggleButton } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
+import { SendPrivatelyScreen } from "./SendPrivatelyScreen";
+import { BottomSheet } from "@rneui/themed";
 
 export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [paymentModalVisible, setPaymentModalVisible]=useState(false);
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+
+  const [sendModal, setSendModal] = useState(false);
+  const windowHeight = Dimensions.get('window').height;
+//  console.log(windowHeight);
 
   const onLogout = () => {
     dispatch(logoutUser());
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setPaymentModalVisible(true);
-  },[])
+  }, [])
 
   const stories = [
     { id: '1', image: "https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg", name: 'ulomplad' },
@@ -122,7 +129,7 @@ export const HomeScreen = ({ navigation }) => {
             <Text style={{ fontSize: 25, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Add Payment Method</Text>
             <Text style={{ marginTop: 10, alignSelf: "center", marginBottom: 15, width: 300, textAlign: "center" }}>No payment method was found, please add your payment method</Text>
             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, marginBottom: 5, alignSelf: "center" }}>
-              <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]} onPress={()=>{ setPaymentModalVisible(false); navigation.navigate("PaymentScreen");}}>
+              <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]} onPress={() => { setPaymentModalVisible(false); navigation.navigate("PaymentScreen"); }}>
                 <View>
                   <Text style={{ color: "white", fontSize: 18 }}>Add Payment Method</Text>
                 </View>
@@ -133,6 +140,34 @@ export const HomeScreen = ({ navigation }) => {
       </Modal>
     )
   }
+
+
+  const SendModal = () => {
+    return (
+      // <Modal visible={sendModal} animationType="slide" transparent={true} onRequestClose={()=>{setSendModal(!sendModal)}}>
+      <BottomSheet isVisible={sendModal} onBackdropPress={() => { setSendModal(!sendModal) }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "transparent" }}>
+          <View style={{ backgroundColor: "white", borderRadius: 20, width: "100%", height: windowHeight - 406 }}>
+              <View>
+                <View style={{ flexDirection: "row",paddingLeft:20, paddingRight:20, paddingTop:20 , alignItems: "center", justifyContent: "space-between" }}>
+                  <View >
+                    <Text style={{ fontSize: 20, color: "black" }}>Send</Text>
+                  </View>
+                  <View >
+                    <TouchableHighlight onPress={() => { setSendModal(!sendModal) }}  underlayColor="lightgrey">
+                      <EIcon name="cross" size={30} color="black"></EIcon>
+                    </TouchableHighlight>
+                  </View>
+                </View>
+              </View>
+              <SendPrivatelyScreen></SendPrivatelyScreen>
+          </View>
+        </View>
+      </BottomSheet>
+      // </Modal>
+    )
+  }
+
 
   const TipCreatorModal = () => {
     return (
@@ -332,7 +367,9 @@ export const HomeScreen = ({ navigation }) => {
             <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
             <Icon name="chat-bubble-outline" size={25} style={styles.icon} />
             <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
-            <FEIcon name="send" size={25} style={styles.icon} />
+            <TouchableHighlight onPress={() => { setSendModal(true) }} underlayColor="lightgrey">
+              <FEIcon name="send" size={25} style={styles.icon} />
+            </TouchableHighlight>
           </View>
           {/* <Text style={styles.description}><Text style={styles.username}>{post.user.username} </Text>{post.description}</Text>
         {post.comments.map(comment => (
@@ -343,12 +380,14 @@ export const HomeScreen = ({ navigation }) => {
     );
   }
 
+
+
   const renderHeader = () => (
     <View style={styles.header}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Image source={require('../../assets/Frame.png')} style={styles.microImage} />
-        <TouchableHighlight style={{borderRadius:20}} underlayColor="lightgrey" onPress={()=>{navigation.navigate("Notification")}}>
-            <Icon name="notifications-none" size={30} style={styles.microImage} />
+        <TouchableHighlight style={{ borderRadius: 20 }} underlayColor="lightgrey" onPress={() => { navigation.navigate("Notification") }}>
+          <Icon name="notifications-none" size={30} style={styles.microImage} />
         </TouchableHighlight>
       </View>
 
@@ -367,7 +406,7 @@ export const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <MenuProvider>
         <View>
-          {(modalVisible || paymentModalVisible ) && <BlurView
+          {(modalVisible || paymentModalVisible) && <BlurView
             style={{ position: "absolute", height: "100%", width: "100%" }}
             blurType="light"
             blurAmount={1}
@@ -383,6 +422,7 @@ export const HomeScreen = ({ navigation }) => {
           />
           <PaymentModal></PaymentModal>
           <TipCreatorModal></TipCreatorModal>
+          <SendModal></SendModal>
         </View>
       </MenuProvider>
     </SafeAreaView>

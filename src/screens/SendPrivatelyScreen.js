@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, FlatList, Text, View, TouchableHighlight, Image } from "react-native";
+import { SafeAreaView, StyleSheet, FlatList, Text, View, TouchableHighlight, Image, ScrollView } from "react-native";
 import { Divider } from "react-native-paper";
 import LinearGradient from "react-native-linear-gradient";
 
@@ -11,6 +11,12 @@ export const SendPrivatelyScreen = () => {
         { id: '2', image: 'https://randomuser.me/api/portraits/women/18.jpg', name: 'Nerson Azamma', desc: "Great Effort Buddy!" },
         { id: '3', image: 'https://randomuser.me/api/portraits/women/10.jpg', name: 'Ricky Nicolas', desc: "Great Going" },
         { id: '4', image: 'https://randomuser.me/api/portraits/men/26.jpg', name: 'Nicol Res', desc: "Good work" },
+        { id: '5', image: "https://randomuser.me/api/portraits/men/1.jpg", name: 'ulomplad Khan', desc: "Nice one" },
+        { id: '6', image: 'https://randomuser.me/api/portraits/women/18.jpg', name: 'Nerson Azamma', desc: "Great Effort Buddy!" },
+        { id: '7', image: 'https://randomuser.me/api/portraits/women/18.jpg', name: 'Nerson Azamma', desc: "Great Effort Buddy!" },
+        { id: '8', image: 'https://randomuser.me/api/portraits/women/10.jpg', name: 'Ricky Nicolas', desc: "Great Going" },
+        { id: '9', image: 'https://randomuser.me/api/portraits/men/26.jpg', name: 'Nicol Res', desc: "Good work" },
+
     ];
 
     const handleSelection = (id) => {
@@ -50,14 +56,15 @@ export const SendPrivatelyScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
-            <View>
+            <ScrollView>
                 <FlatList
                     data={comment}
                     renderItem={({ item }) => <Users item={item} />}
                     keyExtractor={item => item.id}
                     scrollEnabled={false}
+                    style={{marginBottom:48}}
                 />
-            </View>
+            </ScrollView>
                 <View style={{ padding: 20, position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center' }}>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: "100%", alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, alignSelf: "center" }}>
                         <TouchableHighlight underlayColor="#BF9EF2" style={{ borderRadius: 10, backgroundColor: "transparent", width: "100%", alignItems: "center", height: 40, justifyContent: "center" }} onPress={() => { console.log("send now") }}>
