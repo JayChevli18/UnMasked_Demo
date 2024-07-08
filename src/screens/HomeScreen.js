@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, TextInput, ScrollView, Dimensions } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, Image, FlatList, TouchableHighlight, ImageBackground, Modal, ScrollView, Dimensions } from "react-native";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/authSlice";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -12,10 +12,11 @@ import { Menu, MenuOption, MenuProvider, MenuOptions, MenuTrigger } from "react-
 import PagerView from 'react-native-pager-view';
 import PaginationDot from 'react-native-dots-pagination';
 import LinearGradient from "react-native-linear-gradient";
-import { ToggleButton } from "react-native-paper";
+import { ToggleButton, TextInput } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
 import { SendPrivatelyScreen } from "./SendPrivatelyScreen";
 import { BottomSheet } from "@rneui/themed";
+import MaskedView from '@react-native-masked-view/masked-view';
 
 export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -24,8 +25,10 @@ export const HomeScreen = ({ navigation }) => {
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
 
   const [sendModal, setSendModal] = useState(false);
+  const [commentModal, setCommentModal] = useState(false);
+
   const windowHeight = Dimensions.get('window').height;
-//  console.log(windowHeight);
+  //  console.log(windowHeight);
 
   const onLogout = () => {
     dispatch(logoutUser());
@@ -113,6 +116,17 @@ export const HomeScreen = ({ navigation }) => {
     </TouchableHighlight>
   );
 
+  const comment = [
+    { id: '1', image: "https://randomuser.me/api/portraits/men/1.jpg", name: 'ulomplad Khan', desc: "Nice one" },
+    { id: '2', image: 'https://randomuser.me/api/portraits/women/18.jpg', name: 'Nerson Azamma', desc: "Great Effort Buddy!" },
+    { id: '3', image: 'https://randomuser.me/api/portraits/women/10.jpg', name: 'Ricky Nicolas', desc: "Great Going" },
+    { id: '4', image: 'https://randomuser.me/api/portraits/men/26.jpg', name: 'Nicol Res', desc: "Good work" },
+    { id: '5', image: "https://randomuser.me/api/portraits/men/1.jpg", name: 'ulomplad Khan', desc: "Nice one" },
+    { id: '6', image: 'https://randomuser.me/api/portraits/women/18.jpg', name: 'Nerson Azamma', desc: "Great Effort Buddy!" },
+    { id: '7', image: 'https://randomuser.me/api/portraits/women/10.jpg', name: 'Ricky Nicolas', desc: "Great Going" },
+    { id: '8', image: 'https://randomuser.me/api/portraits/men/26.jpg', name: 'Nicol Res', desc: "Good work" },
+
+  ]
 
   const PaymentModal = () => {
     return (
@@ -144,29 +158,114 @@ export const HomeScreen = ({ navigation }) => {
 
   const SendModal = () => {
     return (
-      // <Modal visible={sendModal} animationType="slide" transparent={true} onRequestClose={()=>{setSendModal(!sendModal)}}>
       <BottomSheet isVisible={sendModal} onBackdropPress={() => { setSendModal(!sendModal) }}>
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "transparent" }}>
-          <View style={{ backgroundColor: "white", borderRadius: 20, width: "100%", height: windowHeight - 406 }}>
-              <View>
-                <View style={{ flexDirection: "row",paddingLeft:20, paddingRight:20, paddingTop:20 , alignItems: "center", justifyContent: "space-between" }}>
-                  <View >
-                    <Text style={{ fontSize: 20, color: "black" }}>Send</Text>
-                  </View>
-                  <View >
-                    <TouchableHighlight onPress={() => { setSendModal(!sendModal) }}  underlayColor="lightgrey">
-                      <EIcon name="cross" size={30} color="black"></EIcon>
-                    </TouchableHighlight>
-                  </View>
+          <View style={{ backgroundColor: "white", borderRadius: 20, width: "100%", height: windowHeight - 306 }}>
+            <View>
+              <View style={{ flexDirection: "row", paddingLeft: 20, paddingRight: 20, paddingTop: 20, alignItems: "center", justifyContent: "space-between" }}>
+                <View>
+                  <Text style={{ fontSize: 20, color: "black" }}>Send</Text>
+                </View>
+                <View>
+                  <TouchableHighlight onPress={() => { setSendModal(!sendModal) }} underlayColor="lightgrey">
+                    <EIcon name="cross" size={30} color="black"></EIcon>
+                  </TouchableHighlight>
                 </View>
               </View>
-              <SendPrivatelyScreen></SendPrivatelyScreen>
+            </View>
+            <SendPrivatelyScreen></SendPrivatelyScreen>
           </View>
         </View>
       </BottomSheet>
-      // </Modal>
     )
   }
+
+  const Users = ({ item }) => (
+    <View style={{ marginTop: 12, }}>
+      <View style={{ alignItems: 'flex-start', justifyContent: "center", margin: 4, }}>
+        <View style={{ flexDirection: "row", alignItems: "center", }}>
+          <View style={{ alignItems: "center", justifyContent: "center", width: 50, height: 50, borderRadius: 25 }}>
+            <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 25, }} />
+          </View>
+          <View style={{ marginLeft: 20, }}>
+            <Text>{item.desc}</Text>
+            <Text style={{ color: "black", }}>{item.name}</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  )
+
+
+  const CommentModal = () => {
+    return (
+      <BottomSheet isVisible={commentModal} onBackdropPress={() => { setCommentModal(!commentModal) }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "transparent" }}>
+          <View style={{ backgroundColor: "white", borderRadius: 20, width: "100%", height: windowHeight - 306 }}>
+            <View>
+              <View style={{ flexDirection: "row", paddingLeft: 20, paddingRight: 20, paddingTop: 20, alignItems: "center", justifyContent: "space-between" }}>
+                <View>
+                  <Text style={{ fontSize: 20, color: "black" }}>Add Comment</Text>
+                </View>
+                <View>
+                  <TouchableHighlight onPress={() => { setCommentModal(!commentModal) }} underlayColor="lightgrey">
+                    <EIcon name="cross" size={30} color="black"></EIcon>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </View>
+            <View style={{ padding: 20, flex: 1 }}>
+              <ScrollView>
+                <FlatList
+                  data={comment}
+                  renderItem={({ item }) => <Users item={item}></Users>}
+                  scrollEnabled={false}
+                  style={{ marginBottom: 80 }}
+                >
+                </FlatList>
+              </ScrollView>
+              <View style={{ padding: 20, marginTop:20,position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center', }}>
+                <View style={styles.textInput}>
+                  <TextInput
+                    placeholder="Send a message"
+                    style={styles.textInput}
+                    placeholderTextColor="grey"
+                    left={
+                      <TextInput.Icon
+                        icon={() => (<Image source={require("../../assets/rose.png")} style={styles.storyImage}></Image>)}
+                      />
+                    }
+                    right={
+                      <TextInput.Icon
+                        icon={() => (<MaskedView
+                          style={{ width: 20, height: 20 }}
+                          maskElement={
+                            <View style={{ backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center' }}>
+                              <FEIcon name="send" size={20} color="black" />
+                            </View>
+                          }
+                        >
+                          <LinearGradient
+                            colors={['#BF9EF2', '#FF9EF2']}
+                            style={{ flex: 1 }}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                          />
+                        </MaskedView>
+                        )}
+                      />
+                    }
+                  />
+                </View>
+
+              </View>
+            </View>
+          </View>
+        </View>
+      </BottomSheet>
+    )
+  }
+
 
 
   const TipCreatorModal = () => {
@@ -365,7 +464,9 @@ export const HomeScreen = ({ navigation }) => {
           <View style={styles.actionIcons}>
             <Icon name="favorite-border" size={25} style={styles.icon} />
             <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
-            <Icon name="chat-bubble-outline" size={25} style={styles.icon} />
+            <TouchableHighlight onPress={() => { setCommentModal(true) }} underlayColor="lightgrey">
+              <Icon name="chat-bubble-outline" size={25} style={styles.icon} />
+            </TouchableHighlight>
             <Text style={{ fontSize: 12, marginRight: 10, color: "black", fontWeight: "500" }}>{post.likes}</Text>
             <TouchableHighlight onPress={() => { setSendModal(true) }} underlayColor="lightgrey">
               <FEIcon name="send" size={25} style={styles.icon} />
@@ -423,6 +524,7 @@ export const HomeScreen = ({ navigation }) => {
           <PaymentModal></PaymentModal>
           <TipCreatorModal></TipCreatorModal>
           <SendModal></SendModal>
+          <CommentModal></CommentModal>
         </View>
       </MenuProvider>
     </SafeAreaView>
@@ -560,4 +662,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "40%",
   },
+  textInput: {
+    backgroundColor: 'white',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 10,
+    width: "100%",
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+
 });
