@@ -140,7 +140,7 @@ export const HomeScreen = ({ navigation }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={{ fontSize: 25, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Add Payment Method</Text>
+            <Text style={{ fontSize: 24, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Add Payment Method</Text>
             <Text style={{ marginTop: 10, alignSelf: "center", marginBottom: 15, width: 300, textAlign: "center" }}>No payment method was found, please add your payment method</Text>
             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={["#FBB4D1", "#BF9EF2"]} style={{ borderRadius: 10, width: 300, alignItems: "center", height: 40, justifyContent: "center", marginTop: 20, marginBottom: 5, alignSelf: "center" }}>
               <TouchableHighlight underlayColor="#BF9EF2" style={[styles.button, { borderRadius: 10, backgroundColor: "transparent", width: 300, alignItems: "center", height: 40, justifyContent: "center" }]} onPress={() => { setPaymentModalVisible(false); navigation.navigate("PaymentScreen"); }}>
@@ -280,7 +280,7 @@ export const HomeScreen = ({ navigation }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={{ fontSize: 25, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Tip Creator</Text>
+            <Text style={{ fontSize: 24, color: "black", fontWeight: "bold", textAlign: "center", marginTop: 5 }}>Tip Creator</Text>
             <Text style={{ marginTop: 10, alignSelf: "center", marginBottom: 15, width: 300, textAlign: "center" }}>Support this creator by saying thanks</Text>
 
             <View style={{

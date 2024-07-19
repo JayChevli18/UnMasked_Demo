@@ -18,6 +18,7 @@ import { EditPostScreen } from "../screens/EditPostScreen";
 import { BundlesScreen } from "../screens/BundlesScreen";
 import { MessagesScreen } from "../screens/MessagesScreen";
 import { ViewStoryScreen } from "../screens/ViewStoryScreen";
+import { NotificationTest } from "../screens/NotificationTest";
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,7 @@ export const More_Navigation = ({ navigation }) => {
                 <Stack.Screen name="Bundles" component={BundlesScreen} />
                 <Stack.Screen name="Messages" component={MessagesScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="Content Management" component={ViewStoryScreen} options={{headerShown:false}}></Stack.Screen>
+                <Stack.Screen name="NotificationTest" component={NotificationTest} options={{headerShown:false}}/>
             </Stack.Navigator>
         </MenuProvider>
 

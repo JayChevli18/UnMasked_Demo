@@ -7,8 +7,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { firebaseConfig } from './src/firebase/firebase';
 import store from "./src/store/store";
 import { Settings } from 'react-native-fbsdk-next';
-
+import messaging from "@react-native-firebase/messaging";
 firebaseConfig;
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
 
 const App = () => {
 
@@ -22,6 +27,7 @@ const App = () => {
       setIsLoading(false);
     }, 1000)
   }, []);
+
 
   if (isLoading) {
     return <SplashScreen></SplashScreen>

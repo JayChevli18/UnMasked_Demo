@@ -20,6 +20,7 @@ export const MoreScreen = ({navigation}) => {
         { id: '10', title: 'Followers', icon: 'chatbubbles-outline', type: 'ionicon' },
         { id: '11', title: 'Bundles', icon: 'chatbubbles-outline', type: 'ionicon' },
         { id: '12', title: 'Messages', icon: 'chatbubbles-outline', type: 'ionicon' },
+        { id: '13', title: 'NotificationTest', icon: 'chatbubbles-outline', type: 'ionicon' },
 
     ];
     return (
